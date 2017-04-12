@@ -1054,6 +1054,7 @@ class CModule {
      *  @return true if the line was queued for sending.
      */
     virtual bool PutIRC(const CString& sLine);
+    virtual bool PutIRCMessage(const CMessage& Message);
     /** This function sends a given raw IRC line to a client.
      *  If we are in a module hook which is called for a specific client,
      *  only that client will get the line, else all connected clients will
@@ -1062,6 +1063,7 @@ class CModule {
      *  @return true if the line was sent to at least one client.
      */
     virtual bool PutUser(const CString& sLine);
+    virtual bool PutUserMessage(const CMessage& Message);
     /** This function generates a query from *status. If we are in a module
      *  hook for a specific client, only that client gets this message, else
      *  all connected clients will receive it.

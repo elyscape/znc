@@ -58,7 +58,9 @@ class CIRCSock : public CIRCSocket {
     void ReachedMaxBuffer() override;
 
     void PutIRC(const CString& sLine);
+    void PutIRC(const CMessage& Message);
     void PutIRCQuick(const CString& sLine);  //!< Should be used for PONG only
+    void PutIRCQuick(const CMessage& Message);  //!< Should be used for PONG only
     void ResetChans();
     void Quit(const CString& sQuitMsg = "");
 
@@ -175,7 +177,7 @@ class CIRCSock : public CIRCSocket {
     static const time_t m_uCTCPFloodTime;
     static const unsigned int m_uCTCPFloodCount;
     MCString m_mISupport;
-    std::deque<CString> m_vsSendQueue;
+    std::deque<CMessage> m_vsSendQueue;
     short int m_iSendsAllowed;
     unsigned short int m_uFloodBurst;
     double m_fFloodRate;

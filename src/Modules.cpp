@@ -998,8 +998,14 @@ void CModule::OnServerCapResult(const CString& sCap, bool bSuccess) {}
 bool CModule::PutIRC(const CString& sLine) {
     return (m_pNetwork) ? m_pNetwork->PutIRC(sLine) : false;
 }
+bool CModule::PutIRCMessage(const CMessage& Message) {
+    return (m_pNetwork) ? m_pNetwork->PutIRC(Message) : false;
+}
 bool CModule::PutUser(const CString& sLine) {
     return (m_pNetwork) ? m_pNetwork->PutUser(sLine, m_pClient) : false;
+}
+bool CModule::PutUserMessage(const CMessage& Message) {
+    return (m_pNetwork) ? m_pNetwork->PutUser(Message, m_pClient) : false;
 }
 bool CModule::PutStatus(const CString& sLine) {
     return (m_pNetwork) ? m_pNetwork->PutStatus(sLine, m_pClient) : false;

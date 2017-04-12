@@ -230,7 +230,7 @@ void CClient::ReadLine(const CString& sData) {
 
     if (bReturn) return;
 
-    PutIRC(Message.ToString(CMessage::ExcludePrefix | CMessage::ExcludeTags));
+    PutIRC(Message);
 }
 
 void CClient::SetNick(const CString& s) { m_sNick = s; }
@@ -472,6 +472,13 @@ void CClient::PutIRC(const CString& sLine) {
     if (m_pNetwork) {
         m_pNetwork->PutIRC(sLine);
     }
+}
+
+bool CClient::PutIRC(const CMessage& Message) {
+    if (!m_pNetwork) {
+        return false;
+    }
+    return m_pNetwork->PutIRC(Message);
 }
 
 CString CClient::GetFullName() const {
@@ -946,8 +953,7 @@ bool CClient::OnActionMessage(CActionMessage& Message) {
         if (m_pNetwork) {
             AddBuffer(Message);
             EchoMessage(Message);
-            PutIRC(Message.ToString(CMessage::ExcludePrefix |
-                                    CMessage::ExcludeTags));
+            PutIRC(Message);
         }
     }
 
@@ -1011,8 +1017,7 @@ bool CClient::OnCTCPMessage(CCTCPMessage& Message) {
         if (m_pNetwork) {
             AddBuffer(Message);
             EchoMessage(Message);
-            PutIRC(Message.ToString(CMessage::ExcludePrefix |
-                                    CMessage::ExcludeTags));
+            PutIRC(Message);
         }
     }
 
@@ -1125,8 +1130,7 @@ bool CClient::OnNoticeMessage(CNoticeMessage& Message) {
         if (m_pNetwork) {
             AddBuffer(Message);
             EchoMessage(Message);
-            PutIRC(Message.ToString(CMessage::ExcludePrefix |
-                                    CMessage::ExcludeTags));
+            PutIRC(Message);
         }
     }
 
@@ -1233,8 +1237,7 @@ bool CClient::OnTextMessage(CTextMessage& Message) {
         if (m_pNetwork) {
             AddBuffer(Message);
             EchoMessage(Message);
-            PutIRC(Message.ToString(CMessage::ExcludePrefix |
-                                    CMessage::ExcludeTags));
+            PutIRC(Message);
         }
     }
 

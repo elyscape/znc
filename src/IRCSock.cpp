@@ -1124,26 +1124,36 @@ bool CIRCSock::OnWallopsMessage(CMessage& Message) {
 }
 
 void CIRCSock::PutIRC(const CString& sLine) {
+    CMessage Message(sLine);
+    PutIRC(Message);
+}
+
+void CIRCSock::PutIRC(const CMessage& Message) {
     // Only print if the line won't get sent immediately (same condition as in
     // TrySend()!)
     if (m_bFloodProtection && m_iSendsAllowed <= 0) {
         DEBUG("(" << m_pNetwork->GetUser()->GetUserName() << "/"
-                  << m_pNetwork->GetName() << ") ZNC -> IRC [" << sLine
-                  << "] (queued)");
+                  << m_pNetwork->GetName() << ") ZNC -> IRC ["
+                  << Message.ToString() << "] (queued)");
     }
-    m_vsSendQueue.push_back(sLine);
+    m_vsSendQueue.push_back(Message);
     TrySend();
 }
 
 void CIRCSock::PutIRCQuick(const CString& sLine) {
+    CMessage Message(sLine);
+    PutIRCQuick(Message);
+}
+
+void CIRCSock::PutIRCQuick(const CMessage& Message) {
     // Only print if the line won't get sent immediately (same condition as in
     // TrySend()!)
     if (m_bFloodProtection && m_iSendsAllowed <= 0) {
         DEBUG("(" << m_pNetwork->GetUser()->GetUserName() << "/"
-                  << m_pNetwork->GetName() << ") ZNC -> IRC [" << sLine
-                  << "] (queued to front)");
+                  << m_pNetwork->GetName() << ") ZNC -> IRC ["
+                  << Message.ToString() << "] (queued to front)");
     }
-    m_vsSendQueue.push_front(sLine);
+    m_vsSendQueue.push_front(Message);
     TrySend();
 }
 
@@ -1153,9 +1163,7 @@ void CIRCSock::TrySend() {
            (!m_bFloodProtection || m_iSendsAllowed > 0)) {
         m_iSendsAllowed--;
         bool bSkip = false;
-        CString& sLine = m_vsSendQueue.front();
-
-        CMessage Message(sLine);
+        CMessage& Message = m_vsSendQueue.front();
         Message.SetNetwork(m_pNetwork);
         IRCSOCKMODULECALL(OnSendToIRCMessage(Message), &bSkip);
 

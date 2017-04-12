@@ -191,6 +191,7 @@ class CClient : public CIRCSocket {
     void SetPlaybackActive(bool bActive) { m_bPlaybackActive = bActive; }
 
     void PutIRC(const CString& sLine);
+    bool PutIRC(const CMessage& Message);
     /** Sends a raw data line to the client.
      *  @param sLine The line to be sent.
      *
